@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+
+  app:
+    container_name: "app"
+    image: app
+    environment:
+      - MONGO_DB=${MONGO_DB}
+      - MONGO_HOST=mongo_db
+      - REDIS_HOST=redis_db
+      - DA_DATA_URL=${DA_DATA_URL}
+      - DA_DATA_KEY=${DA_DATA_KEY}
+      - DA_DATA_SECRET=${DA_DATA_SECRET}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo_db
+      - redis_db
+
+  mongo_db:
+      image: mongo
+      container_name: "mongo_db"
+      ports:
+        - "27017:27017"
+
+  redis_db:
+    image: redis:latest
+    container_name: "redis_db"
+    ports:
+      - "6377:6379"
