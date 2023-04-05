@@ -1,6 +1,5 @@
 FROM python:3.9-slim-buster
 
-# system update & package install
 RUN apt-get -y update && \
     apt-get install -y --no-install-recommends \
     build-essential \
