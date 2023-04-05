@@ -8,7 +8,7 @@ from api.models import (
     UserDeleteByPhone,
     UserResponseSaveUpdate,
 )
-from db.models import CreateDBUser, UpdateDBUser
+from db.models import DBUser
 from utils import id_generate, timestamp_now
 
 from fastapi import HTTPException
@@ -46,7 +46,7 @@ async def _get_country_code(country, cache):
 
 
 async def _save_new_user_data(body: UserCreate, db_mongo):
-    user_data = CreateDBUser(
+    user_data = DBUser(
         user_id=id_generate(12),
         name=body.name,
         surname=body.surname,
@@ -67,7 +67,7 @@ async def _save_new_user_data(body: UserCreate, db_mongo):
 
 async def _update_user_data(existed_data, body: UserDB, db_mongo):
     body = json.loads(body.json())
-    user_data = UpdateDBUser(
+    user_data = DBUser(
         user_id=existed_data["user_id"],
         name=body["name"],
         surname=body["surname"],
