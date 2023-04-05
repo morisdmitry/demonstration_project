@@ -21,7 +21,6 @@ docs.zip
 archive.zip
 debug_server.py
 Makefile
-docker-compose-local.yaml
 # vim temporary files
 *~
 .*.sw?

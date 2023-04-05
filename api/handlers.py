@@ -56,7 +56,7 @@ async def get_user_data(
     )
 
 
-@user_crud.delete("/delete_user_data/", response_model=GetUserByPhone)
+@user_crud.post("/delete_user_data/", response_model=GetUserByPhone)
 async def delete_user_data(
     body: GetUserByPhone,
     mongo: AsyncIOMotorClient = Depends(get_mongo),
