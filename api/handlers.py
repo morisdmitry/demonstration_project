@@ -1,4 +1,5 @@
 import aioredis
+from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi import APIRouter, Depends, HTTPException
 from api.actions import (
     _delete_user_data,
@@ -16,14 +17,13 @@ from api.models import (
 from db.dals import CacheDAO, UserDAO
 from db.clients import get_redis, get_mongo
 
-
 user_crud = APIRouter()
 
 
 @user_crud.post("/save_user_data/", response_model=UserResponseSaveUpdate)
 async def save_user_data(
     body: UserCreate,
-    mongo=Depends(get_mongo),
+    mongo: AsyncIOMotorClient = Depends(get_mongo),
 ):
     """
     update data if user exists , create data if doesnt exists
@@ -41,7 +41,7 @@ async def save_user_data(
 async def get_user_data(
     body: GetUserByPhone,
     redis: aioredis.Redis = Depends(get_redis),
-    mongo=Depends(get_mongo),
+    mongo: AsyncIOMotorClient = Depends(get_mongo),
 ):
     db_cache = CacheDAO(redis)
     db_mongo = UserDAO(mongo)
@@ -59,7 +59,7 @@ async def get_user_data(
 @user_crud.delete("/delete_user_data/", response_model=GetUserByPhone)
 async def delete_user_data(
     body: GetUserByPhone,
-    mongo=Depends(get_mongo),
+    mongo: AsyncIOMotorClient = Depends(get_mongo),
 ):
     db_mongo = UserDAO(mongo)
     return await _delete_user_data(body, db_mongo)

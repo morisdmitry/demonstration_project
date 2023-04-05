@@ -1,7 +1,6 @@
 class UserDAO:
     def __init__(self, db_client):
         self.client = db_client
-        
 
     async def add(self, params):
         return await self.client.records.insert_one(params)
